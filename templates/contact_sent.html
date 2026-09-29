@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Message sent — Chuka Black Market{% endblock %}
+
+{% block content %}
+<section class="ticket-wrap">
+  <div class="ticket">
+    <span class="chip chip-blue">Sent</span>
+    <h1>Got it.</h1>
+    <p class="sub">Your message has been sent. Thanks for the note.</p>
+    <a class="btn btn-orange" href="{{ url_for('index') }}">Back to the board</a>
+  </div>
+</section>
+{% endblock %}

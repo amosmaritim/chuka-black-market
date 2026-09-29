@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Posted — Chuka Black Market{% endblock %}
+
+{% block content %}
+<section class="ticket-wrap">
+  <div class="ticket">
+    <span class="chip chip-blue">Posted</span>
+    <h1>"{{ listing['name'] }}" is on the board</h1>
+    <p class="sub">Anyone browsing Chuka Black Market can see it now.</p>
+
+    <div class="stub">
+      <p class="stub-label">Remember your password</p>
+      <p class="stub-copy">When it's sold, come back to this listing and tap "Remove product" — you'll need the password you just set. There's no account, so that password is the only way in.</p>
+    </div>
+
+    <a class="btn btn-outline" href="{{ url_for('listing_detail', listing_id=listing['id']) }}">View your listing</a>
+  </div>
+</section>
+{% endblock %}

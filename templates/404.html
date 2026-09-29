@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Not found — Chuka Black Market{% endblock %}
+
+{% block content %}
+<section class="empty-state">
+  <h2>That's not on the board.</h2>
+  <p>The listing may have been removed, or the link is off. <a href="{{ url_for('index') }}">Go back to the board</a>.</p>
+</section>
+{% endblock %}

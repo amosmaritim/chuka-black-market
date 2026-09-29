@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}{{ listing['name'] }} — Chuka Black Market{% endblock %}
+{% block meta_description %}{{ listing['name'] }} — KSh {{ '{:,.0f}'.format(listing['price']) }}, {{ listing['condition'] }}. For sale in Chuka. Contact the seller directly, no accounts needed.{% endblock %}
+
+{% block og_title %}{{ listing['name'] }} — KSh {{ '{:,.0f}'.format(listing['price']) }}{% endblock %}
+{% block og_description %}{{ listing['condition'] }} · {{ listing['category'] }} · For sale in Chuka{% endblock %}
+{% block og_image %}{% if photos and photos[0] %}{{ url_for('static', filename='uploads/' ~ photos[0], _external=True) }}{% else %}{{ url_for('static', filename='img/og-default.png', _external=True) }}{% endif %}{% endblock %}
+
+{% block twitter_title %}{{ listing['name'] }} — KSh {{ '{:,.0f}'.format(listing['price']) }}{% endblock %}
+{% block twitter_description %}{{ listing['condition'] }} · {{ listing['category'] }} · For sale in Chuka{% endblock %}
+{% block twitter_image %}{% if photos and photos[0] %}{{ url_for('static', filename='uploads/' ~ photos[0], _external=True) }}{% else %}{{ url_for('static', filename='img/og-default.png', _external=True) }}{% endif %}{% endblock %}
+
+{% block content %}
+<script type="application/ld+json">{{ product_schema|tojson }}</script>
+<a class="back-link" href="{{ url_for('index') }}">&larr; Back to the board</a>
+
+<section class="detail-layout">
+  <div class="gallery">
+    {% if photos %}
+      <div class="gallery-main">
+        <img id="gallery-main-img" src="{{ url_for('static', filename='uploads/' ~ photos[0]) }}" alt="{{ listing['name'] }}" decoding="async">
+      </div>
+      {% if photos|length > 1 %}
+      <div class="gallery-thumbs">
+        {% for p in photos %}
+        <img class="thumb" src="{{ url_for('static', filename='uploads/' ~ (p|thumb)) }}"
+             alt="{{ listing['name'] }} photo {{ loop.index }}" loading="lazy" decoding="async"
+             onclick="document.getElementById('gallery-main-img').src = '{{ url_for('static', filename='uploads/' ~ p) }}'">
+        {% endfor %}
+      </div>
+      {% endif %}
+    {% else %}
+      <div class="gallery-main no-photo">No photo provided</div>
+    {% endif %}
+  </div>
+
+  <div class="detail-info">
+    <span class="chip chip-blue">{{ listing['category'] }}</span>
+    <h1>{{ listing['name'] }}</h1>
+    <p class="detail-price">KSh {{ '{:,.0f}'.format(listing['price']) }}</p>
+
+    <dl class="spec-list">
+      <div><dt>Condition</dt><dd>{{ listing['condition'] }}</dd></div>
+      <div><dt>Quantity available</dt><dd>{{ listing['quantity'] }}</dd></div>
+    </dl>
+
+    {% if listing['specs'] %}
+    <div class="detail-block">
+      <h3>Details</h3>
+      <p class="specs-text">{{ listing['specs'] }}</p>
+    </div>
+    {% endif %}
+
+    <div class="contact-card">
+      <h3>Contact the seller</h3>
+      {% if listing['contact_name'] %}<p class="contact-name">{{ listing['contact_name'] }}</p>{% endif %}
+      <div class="contact-actions">
+        <a class="btn btn-blue" href="tel:{{ listing['contact_phone'] }}">Call {{ listing['contact_phone'] }}</a>
+        <a class="btn btn-outline" href="{{ listing['contact_phone']|whatsapp_link }}" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+      <p class="hint">Meet in a public place in Chuka and check the item before you pay.</p>
+    </div>
+
+    <div class="manage-row">
+      <span>Sold this?</span>
+      <a href="{{ url_for('remove_listing', listing_id=listing['id']) }}">Remove product</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

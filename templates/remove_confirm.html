@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Remove listing — Chuka Black Market{% endblock %}
+
+{% block content %}
+<section class="ticket-wrap">
+  <div class="ticket">
+    <h1>Take this off the board?</h1>
+    <div class="mini-card">
+      {% if photos and photos[0] %}
+        <img src="{{ url_for('static', filename='uploads/' ~ (photos[0]|thumb)) }}" alt="{{ listing['name'] }}" loading="lazy" decoding="async">
+      {% endif %}
+      <div>
+        <h3>{{ listing['name'] }}</h3>
+        <p>KSh {{ '{:,.0f}'.format(listing['price']) }} · {{ listing['condition'] }}</p>
+      </div>
+    </div>
+
+    {% if no_password %}
+      <p class="sub">This listing was posted before removal passwords were added, so there's no password to check it against. Contact the site owner and they can take it down from the admin page.</p>
+      <a class="btn btn-outline" href="{{ url_for('listing_detail', listing_id=listing['id']) }}">Back to the listing</a>
+    {% else %}
+      <p class="sub">Enter the password you set when you posted this to take it down for good.</p>
+
+      {% if error %}
+      <div class="error-box">{{ error }}</div>
+      {% endif %}
+
+      <form method="post">
+        <label for="password">Removal password</label>
+        <input id="password" name="password" type="password" autofocus required>
+        <button class="btn btn-orange btn-large" type="submit" style="margin-top:14px;">Remove listing</button>
+      </form>
+      <a class="btn btn-outline" href="{{ url_for('listing_detail', listing_id=listing['id']) }}">No, keep it up</a>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Admin — Chuka Black Market{% endblock %}
+
+{% block content %}
+<section class="admin-head">
+  <h1>Admin — all listings</h1>
+  <p class="sub">{{ listings|length }} listing{{ 's' if listings|length != 1 else '' }} on the board. <a href="{{ url_for('admin_messages') }}">Messages{% if message_count %} ({{ message_count }}){% endif %}</a></p>
+</section>
+
+{% if listings %}
+<div class="admin-table-wrap">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Condition</th>
+        <th>Price</th>
+        <th>Contact</th>
+        <th>Posted</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in listings %}
+      {% set photos = (item['photos'] or '').split(',') if item['photos'] else [] %}
+      <tr>
+        <td class="admin-thumb">
+          {% if photos and photos[0] %}
+            <img src="{{ url_for('static', filename='uploads/' ~ (photos[0]|thumb)) }}" alt="" loading="lazy" decoding="async">
+          {% else %}
+            <div class="admin-no-photo"></div>
+          {% endif %}
+        </td>
+        <td><a href="{{ url_for('listing_detail', listing_id=item['id']) }}">{{ item['name'] }}</a></td>
+        <td>{{ item['category'] }}</td>
+        <td>{{ item['condition'] }}</td>
+        <td class="admin-price">KSh {{ '{:,.0f}'.format(item['price']) }}</td>
+        <td>{{ item['contact_phone'] }}</td>
+        <td>{{ item['created_at'] }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin_remove_listing', listing_id=item['id']) }}"
+                onsubmit="return confirm('Remove &quot;{{ item['name'] }}&quot;? This can\'t be undone.');">
+            <button class="btn btn-outline btn-danger" type="submit">Remove</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="sub">Nothing posted yet.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Chuka Black Market{% endblock %}</title>
+<meta name="description" content="{% block meta_description %}Buy and sell anything in Chuka. No accounts, no fees — browse what's for sale or list your own item in under a minute.{% endblock %}">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Chuka Black Market">
+<meta property="og:title" content="{% block og_title %}Chuka Black Market{% endblock %}">
+<meta property="og:description" content="{% block og_description %}Buy and sell anything in Chuka. No accounts, no fees — browse what's for sale or list your own item.{% endblock %}">
+<meta property="og:url" content="{{ request.url }}">
+<meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='img/og-default.png', _external=True) }}{% endblock %}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{% block twitter_title %}Chuka Black Market{% endblock %}">
+<meta name="twitter:description" content="{% block twitter_description %}Buy and sell anything in Chuka — no accounts, no fees.{% endblock %}">
+<meta name="twitter:image" content="{% block twitter_image %}{{ url_for('static', filename='img/og-default.png', _external=True) }}{% endblock %}">
+
+<link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='img/favicon-16x16.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='img/apple-touch-icon.png') }}">
+<link rel="manifest" href="{{ url_for('static', filename='img/site.webmanifest') }}">
+<meta name="theme-color" content="#d97757">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark">CB</span>
+      <span class="brand-name">Chuka <em>Black Market</em></span>
+    </a>
+    <a class="btn btn-orange" href="{{ url_for('sell') }}">+ Sell something</a>
+  </div>
+</header>
+
+<main class="wrap">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <p>No accounts. No middlemen. Just Chuka selling to Chuka.</p>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

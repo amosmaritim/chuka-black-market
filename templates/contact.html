@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Contact — Chuka Black Market{% endblock %}
+{% block meta_description %}Get in touch about Chuka Black Market — questions, problems with the site, or anything else.{% endblock %}
+
+{% block content %}
+<div class="narrow">
+<section class="form-head">
+  <h1>Get in touch</h1>
+  <p class="sub">Questions, a problem with the site, or anything else for the person behind Chuka Black Market — write it below.</p>
+</section>
+
+{% if error %}
+<div class="error-box">{{ error }}</div>
+{% endif %}
+
+<form class="sell-form" method="post">
+  <fieldset>
+    <label for="message">Your message</label>
+    <textarea id="message" name="message" rows="6" placeholder="What's up?" required>{{ form.message if form else '' }}</textarea>
+
+    <label for="contact_info">Your phone or email (optional)</label>
+    <input id="contact_info" name="contact_info" type="text" placeholder="Only if you'd like a reply" value="{{ form.contact_info if form else '' }}">
+    <p class="field-hint">Leave this blank if you'd rather stay anonymous — it's only used to get back to you.</p>
+  </fieldset>
+
+  <button class="btn btn-orange btn-large" type="submit">Send message</button>
+</form>
+</div>
+{% endblock %}

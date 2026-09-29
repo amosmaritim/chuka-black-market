@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Messages — Chuka Black Market Admin{% endblock %}
+
+{% block content %}
+<section class="admin-head">
+  <h1>Messages</h1>
+  <p class="sub">{{ messages|length }} message{{ 's' if messages|length != 1 else '' }}. <a href="{{ url_for('admin_dashboard') }}">Back to listings</a></p>
+</section>
+
+{% if messages %}
+<div class="admin-table-wrap">
+  <table class="admin-table admin-table-messages">
+    <thead>
+      <tr>
+        <th>Message</th>
+        <th>Reply to</th>
+        <th>Received</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in messages %}
+      <tr>
+        <td class="admin-message-cell">{{ m['message'] }}</td>
+        <td>{{ m['contact_info'] if m['contact_info'] else '—' }}</td>
+        <td>{{ m['created_at'] }}</td>
+        <td>
+          <form method="post" action="{{ url_for('admin_delete_message', message_id=m['id']) }}"
+                onsubmit="return confirm('Mark this message as handled and remove it?');">
+            <button class="btn btn-outline btn-danger" type="submit">Mark handled</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="sub">No messages right now.</p>
+{% endif %}
+{% endblock %}

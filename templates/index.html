@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Chuka Black Market — buy & sell locally{% endblock %}
+
+{% block content %}
+<section class="board-head">
+  <h1>What's on the board today</h1>
+  <p class="sub">Everything for sale in Chuka, posted directly by the seller. Find something you like? Their contact is right on the listing.</p>
+
+  <form class="search-row" method="get" action="{{ url_for('index') }}">
+    <input
+      class="search-input"
+      type="text"
+      name="q"
+      value="{{ query }}"
+      placeholder="Search for anything… “bicycle”, “maize”, “sofa”"
+      autocomplete="off"
+    >
+    {% if active_category %}<input type="hidden" name="category" value="{{ active_category }}">{% endif %}
+    <button class="btn btn-orange" type="submit">Search</button>
+  </form>
+
+  <div class="pill-row">
+    <a class="pill {% if not active_category %}pill-active{% endif %}"
+       href="{{ url_for('index', q=query) if query else url_for('index') }}">All</a>
+    {% for c in categories %}
+      <a class="pill {% if active_category == c %}pill-active{% endif %}"
+         href="{{ url_for('index', category=c, q=query) if query else url_for('index', category=c) }}">{{ c }}</a>
+    {% endfor %}
+  </div>
+</section>
+
+{% if listings %}
+<section class="stall-grid">
+  {% for item in listings %}
+  <a class="stall-card" href="{{ url_for('listing_detail', listing_id=item['id']) }}">
+    <div class="stall-photo">
+      {% set photos = (item['photos'] or '').split(',') if item['photos'] else [] %}
+      {% if photos and photos[0] %}
+        <img src="{{ url_for('static', filename='uploads/' ~ (photos[0]|thumb)) }}" alt="{{ item['name'] }}" loading="lazy" decoding="async">
+      {% else %}
+        <div class="no-photo">No photo</div>
+      {% endif %}
+      <span class="tag-price">KSh {{ '{:,.0f}'.format(item['price']) }}</span>
+    </div>
+    <div class="stall-info">
+      <h3>{{ item['name'] }}</h3>
+      <div class="meta-row">
+        <span class="chip chip-blue">{{ item['category'] }}</span>
+        <span class="chip">{{ item['condition'] }}</span>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</section>
+{% else %}
+<section class="empty-state">
+  <h2>Nothing here yet.</h2>
+  {% if query or active_category %}
+    <p>No listings match that search. <a href="{{ url_for('index') }}">Clear filters</a> and look again.</p>
+  {% else %}
+    <p>Be the first stall on the board — <a href="{{ url_for('sell') }}">post something to sell</a>.</p>
+  {% endif %}
+</section>
+{% endif %}
+{% endblock %}

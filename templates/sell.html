@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Sell something — Chuka Black Market{% endblock %}
+{% block meta_description %}List anything for sale in Chuka in under a minute. No account needed — just your item, a photo, and your contact info.{% endblock %}
+
+{% block content %}
+<div class="narrow">
+<section class="form-head">
+  <h1>Put something on the board</h1>
+  <p class="sub">No account needed. Fill this in once — you'll set a password so you can take the listing down yourself once it's sold.</p>
+</section>
+
+{% if errors %}
+<div class="error-box">
+  <strong>Fix the following:</strong>
+  <ul>{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+
+<form class="sell-form" method="post" enctype="multipart/form-data" novalidate>
+
+  <fieldset>
+    <legend>What are you selling</legend>
+
+    <label for="name">Item name</label>
+    <input id="name" name="name" type="text" placeholder="e.g. Samsung A14, 3-seater sofa, 50kg maize" value="{{ form.name if form else '' }}" required>
+
+    <div class="field-row">
+      <div>
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+          <option value="" disabled {% if not form %}selected{% endif %}>Choose one</option>
+          {% for c in categories %}
+          <option value="{{ c }}" {% if form and form.category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="condition">Condition</label>
+        <select id="condition" name="condition" required>
+          <option value="" disabled {% if not form %}selected{% endif %}>Choose one</option>
+          {% for c in conditions %}
+          <option value="{{ c }}" {% if form and form.condition == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div>
+        <label for="quantity">Quantity available</label>
+        <input id="quantity" name="quantity" type="number" min="1" step="1" value="{{ form.quantity if form else 1 }}" required>
+      </div>
+      <div>
+        <label for="price">Price (KSh)</label>
+        <input id="price" name="price" type="number" min="0" step="1" placeholder="e.g. 1500" value="{{ form.price if form else '' }}" required>
+      </div>
+    </div>
+
+    <label for="specs">Details — size, dimensions, specs, anything a buyer should know</label>
+    <textarea id="specs" name="specs" rows="4" placeholder="e.g. 6ft x 4ft, wood frame, one arm slightly loose">{{ form.specs if form else '' }}</textarea>
+  </fieldset>
+
+  <fieldset>
+    <legend>Photos (up to 5)</legend>
+    <input id="photos" name="photos" type="file" accept="image/png, image/jpeg, image/webp" multiple>
+    <p class="field-hint">JPG, PNG or WEBP. Clear daylight photos sell faster.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Your contact info</legend>
+    <p class="field-hint">This is shown publicly so buyers can reach you directly.</p>
+
+    <label for="contact_name">Your name (optional)</label>
+    <input id="contact_name" name="contact_name" type="text" placeholder="e.g. Wanjiru" value="{{ form.contact_name if form else '' }}">
+
+    <label for="contact_phone">Phone number</label>
+    <input id="contact_phone" name="contact_phone" type="tel" placeholder="e.g. 07XX XXX XXX" value="{{ form.contact_phone if form else '' }}" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>Removing it later</legend>
+    <p class="field-hint">Set a password now — you'll enter it on the listing page to take it down once it's sold. No account, just this password.</p>
+
+    <label for="password">Removal password</label>
+    <input id="password" name="password" type="password" placeholder="At least 4 characters" required>
+
+    <label for="password_confirm">Confirm password</label>
+    <input id="password_confirm" name="password_confirm" type="password" required>
+  </fieldset>
+
+  <button class="btn btn-orange btn-large" type="submit">Post to the board</button>
+</form>
+</div>
+{% endblock %}
